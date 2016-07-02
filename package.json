@@ -26,6 +26,7 @@
   "dependencies": {
     "lodash": "^4.13.1",
     "slimerjs": "^0.906.2",
+    "xvfb": "^0.2.3",
     "yargs": "^4.7.1"
   }
 }
