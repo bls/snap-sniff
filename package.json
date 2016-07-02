@@ -2,7 +2,10 @@
   "name": "snap-and-sniff",
   "version": "1.0.0",
   "description": "Load a web page, save a screenshot and save a HAR file.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "bin": {
+    "snap-and-sniff": "./lib/index.js"
+  },
   "scripts": {
     "test": "npm test"
   },
