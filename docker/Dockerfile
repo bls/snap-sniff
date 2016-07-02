@@ -7,4 +7,4 @@ RUN apt-get install -y firefox nodejs xvfb git bzip2
 RUN npm install -g bls/snap-and-sniff
 RUN mkdir /data
 WORKDIR /data
-# CMD ["xvfb-run", "snap-and-sniff"]
+ENTRYPOINT ["/usr/bin/snap-and-sniff", "--xvfb"]
