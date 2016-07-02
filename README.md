@@ -13,6 +13,15 @@ Run: `npm install -g bls/snap-and-sniff`
 
 Requires node.js >= 4.0.0.
 
+## Docker
+
+```sh
+git clone https://github.com/bls/snap-and-sniff.git
+cd snap-and-sniff
+docker build -t ssnap docker 
+docker run -v `pwd`:/data --rm ssnap --xvfb http://amazon.com amazon.png
+```
+
 ## Notes
 
 Took url-to-image and added code from phantomjs "netsniff" example. Then discovered there's no way
