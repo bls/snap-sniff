@@ -13,7 +13,7 @@ snap-sniff https://amazon.com amazon.png amazon.har
 
 ## Quick start - docker
 
-docker run blairs/snap-sniff https://amazon.com amazon.png amazon.har
+docker run blairs/snap-sniff -v `pwd`:/data https://amazon.com amazon.png amazon.har
 
 ## Docker - roll your own
 
@@ -22,7 +22,7 @@ To build a docker image:
 ```sh
 git clone https://github.com/bls/snap-sniff.git
 cd snap-sniff
-docker build -t snap-sniff docker 
+docker build -t snap-sniff .
 docker run -v `pwd`:/data snap-sniff http://amazon.com amazon.png amazon.har
 ```
 
