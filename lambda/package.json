@@ -1,0 +1,19 @@
+{
+  "name": "snap-sniff-lambda",
+  "version": "1.0.0",
+  "description": "A lambda function to screenshot web pages and record traffic",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bls/snap-sniff.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Blair Strang <blair.strang@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "claudia-api-builder": "^1.3.1"
+  }
+}
