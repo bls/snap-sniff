@@ -2,20 +2,22 @@
 
 Load a web page, take a screenshot (snap) and create a har file of network transfers (sniff).
 
-## Quick start - local 
-
-Requires node.js >= 4.0.0.
+## Quick start - docker
 
 ```sh
-npm install -g snap-sniff
+docker run -v `pwd`:/data blairs/snap-sniff https://amazon.com amazon.png amazon.har
+```
+
+The image will be stored in amazon.png, the network traffic in amazon.har.
+
+## Quick start - local
+
+```sh
+npm install -g bls/snap-sniff
 snap-sniff https://amazon.com amazon.png amazon.har
 ```
 
-## Quick start - docker
-
-docker run blairs/snap-sniff -v `pwd`:/data https://amazon.com amazon.png amazon.har
-
-## Docker - roll your own
+## Docker - build your own
 
 To build a docker image:
 
