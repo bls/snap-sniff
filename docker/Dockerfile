@@ -3,8 +3,9 @@ FROM ubuntu:latest
 ADD https://deb.nodesource.com/setup_6.x /root/setup_6.x
 RUN bash /root/setup_6.x
 RUN apt-get -y upgrade
-RUN apt-get install -y firefox nodejs xvfb git bzip2
-RUN npm install -g bls/snap-and-sniff
+RUN apt-get install -y firefox nodejs xvfb git bzip2 build-essential
+RUN npm install -g bls/snap-sniff
 RUN mkdir /data
 WORKDIR /data
-ENTRYPOINT ["/usr/bin/snap-and-sniff", "--xvfb"]
+ENTRYPOINT ["/usr/bin/snap-sniff", "--xvfb"]
+

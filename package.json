@@ -1,17 +1,17 @@
 {
-  "name": "snap-and-sniff",
+  "name": "snap-sniff",
   "version": "1.0.0",
-  "description": "Load a web page, save a screenshot and save a HAR file.",
+  "description": "Load a web page, take a screenshot (snap) and create a har file of network transfers (sniff).",
   "main": "lib/index.js",
   "bin": {
-    "snap-and-sniff": "./lib/index.js"
+    "snap-sniff": "./lib/index.js"
   },
   "scripts": {
     "test": "npm test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bls/snap-and-sniff.git"
+    "url": "git+https://github.com/bls/snap-sniff.git"
   },
   "keywords": [
     "screenshot",
@@ -20,9 +20,9 @@
   "author": "Blair Strang <blair.strang@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bls/snap-and-sniff/issues"
+    "url": "https://github.com/bls/snap-sniff/issues"
   },
-  "homepage": "https://github.com/bls/snap-and-sniff#readme",
+  "homepage": "https://github.com/bls/snap-sniff#readme",
   "dependencies": {
     "lodash": "^4.13.1",
     "slimerjs": "^0.906.2",
