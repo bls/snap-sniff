@@ -17,8 +17,8 @@ npm install -g claudia
 
 ```sh
 git clone https://github.com/bls/snap-sniff
-cd snap-sniff
+cd snap-sniff/lambda
 npm install
-cd lamdba
+claudia create --region ap-southeast-2 --api-module app
 ```
 
