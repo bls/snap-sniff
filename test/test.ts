@@ -1,12 +1,14 @@
 
-var app = require('./helpers/server');
-var snapsniff = require('../lib/index');
-var assert = require('assert');
+import * as http from 'http';
+import * as assert from 'assert';
+import { app } from './helpers/server';
 
-var testPort = 9999;
+var snapsniff = require('../lib/index');
+
+let testPort = 9999;
 
 describe('snap-sniff', function() {
-    var server;
+    let server: http.Server;
 
     before(function(done) {
         server = app.listen(testPort, done);

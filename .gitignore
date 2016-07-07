@@ -38,3 +38,7 @@ jspm_packages
 
 # IntelliJ dir
 .idea
+
+# Ignore intermediate dirs
+dist/
+.build/

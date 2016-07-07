@@ -1,40 +1,57 @@
-var _ = require('lodash');
-var yargs = require('yargs');
 
-var VERSION = require('../package.json').version;
+import * as _ from 'lodash';
+import * as yargs from 'yargs';
 
-var defaultOpts = {
+var VERSION = require('../../package.json').version;
+
+interface Options {
+    width: number;
+    height: number;
+    requestTimeout: number;
+    maxTimeout: number;
+    killTimeout: number;
+    verbose: boolean;
+    fileQuality: number;
+    cropWidth: number;
+    cropHeight: number;
+    cropOffsetLeft: number;
+    cropOffsetTop: number;
+    phantomArguments: string;
+    xvfb: boolean;
+}
+
+var defaultOpts: Options = {
     width: 1280,
     height: 800,
     requestTimeout: 300,
     maxTimeout: 1000 * 10,
     killTimeout: 1000 * 60 * 2,
     verbose: false,
-    fileQuality: false,
-    cropWidth: false,
-    cropHeight: false,
+    fileQuality: -1,
+    cropWidth: -1,
+    cropHeight: -1,
     cropOffsetLeft: 0,
     cropOffsetTop: 0,
     phantomArguments: '--ignore-ssl-errors=true',
     xvfb: false
 };
 
-function getOpts(argv) {
+function getOpts() {
     var userOpts = getUserOpts();
     var opts = _.merge(defaultOpts, userOpts);
     return validateAndTransformOpts(opts);
 }
 
-function getUserOpts() {
-    var userOpts = yargs
-        .usage(
-            'Usage: $0 <url> <imagePath> <harPath> [options]\n\n' +
-            '<url>   Url to take screenshot of\n' +
-            '<imagePath>  File path where the screenshot is saved\n' +
-            '<harPath>  File path where the network capture is saved\n'
-        )
+function getUserOpts(): yargs.Argv {
+    var userOpts: yargs.Argv = yargs
+        .usage([
+            'Usage: $0 <url> <imagePath> <harPath> [options]\n',
+            '<url>   Url to take screenshot of',
+            '<imagePath>  File path where the screenshot is saved',
+            '<harPath>  File path where the network capture is saved'
+        ].join('\n'))
         .wrap(80)
-        .example('$0 http://as.com as.png as.har')
+        .example('$0 http://as.com as.png as.har', 'capture "as.com"')
         .demand(3)
         .option('width', {
             describe: 'Width of the viewport',
@@ -114,13 +131,13 @@ function getUserOpts() {
         .version(VERSION)
         .argv;
 
-    userOpts.url = userOpts._[0];
-    userOpts.imagePath = userOpts._[1];
-    userOpts.harPath = userOpts._[2];
+    userOpts['url'] = userOpts._[0];
+    userOpts['imagePath'] = userOpts._[1];
+    userOpts['harPath'] = userOpts._[2];
     return userOpts;
 }
 
-function validateAndTransformOpts(opts) {
+function validateAndTransformOpts(opts: any) {
     if (opts.width) {
         validateNumber(opts.width, 'Incorrect argument, width is not a number');
     }
@@ -164,12 +181,10 @@ function validateAndTransformOpts(opts) {
     return opts;
 }
 
-function validateNumber(val, message) {
+function validateNumber(val: string, message: string): void {
     var number = Number(val);
     if (!_.isNumber(number)) {
-        var err = message;
-        err.argumentError = true;
-        throw err;
+        throw message;
     }
 }
 

@@ -1,8 +1,8 @@
-var express = require('express');
+import * as express from 'express';
 
-var app = express();
+export let app: express.Application = express();
 
-app.all('/reflect', function(req, res) {
+app.all('/reflect', function(req: express.Request, res: express.Response) {
     res.json({
         protocol: req.protocol,
         method:   req.method,
@@ -19,5 +19,3 @@ app.all('/not-found', function(req, res) {
 app.get('/hello', function(req, res) {
     return "<html><head><title>hello</title></head><body><h1>hello</h1></body></html>";
 });
-
-module.exports = app;

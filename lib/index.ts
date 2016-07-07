@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 
-var _ = require('lodash');
-var path = require('path');
-var childProcess = require('child_process');
+import * as _ from 'lodash';
+import * as child_process from 'child_process';
+import * as path from 'path';
+
 var phantomjs = require('slimerjs');
 var cliParser = require('./cli-parser');
 var Xvfb = require('xvfb');
 
-function render(url, imagePath, harPath, opts) {
+function render(url: string, imagePath: string, harPath: string, opts: any): Promise<number> {
     opts = _.extend(cliParser.defaultOpts, opts);
 
-    var args = [];
+    var args: string[] = [];
     if (_.isString(opts.phantomArguments)) {
         args = opts.phantomArguments.split(' ');
     }
@@ -20,7 +21,7 @@ function render(url, imagePath, harPath, opts) {
     }
 
     args = args.concat([
-        path.join(__dirname, 'snap-and-sniff.js'),
+        path.join(__dirname, 'snap-sniff.js'),
         url,
         imagePath,
         harPath,
@@ -37,40 +38,42 @@ function render(url, imagePath, harPath, opts) {
         opts.cropOffsetTop
     ]);
 
-    var execOpts = {
+    let execOpts = {
         maxBuffer: Infinity
     };
 
-    var killTimer;
-    return new Promise(function(resolve, reject) {
-        var child;
-        killTimer = setTimeout(function() {
-            killPhantom(opts, child);
-            reject(new Error('Phantomjs process timeout'));
-        }, opts.killTimeout);
+    let killTimer: number;
 
+    return new Promise<number>(function(resolve, reject) {
+        let child: child_process.ChildProcess;
         try {
-            child = childProcess.spawn(phantomjs.path, args, {
+            child = child_process.spawn(phantomjs.path, args, {
                 stdio: 'inherit'
             });
         } catch (err) {
-            return Promise.reject(err);
+            reject(err);
         }
 
-        function errorHandler(err) {
+        killTimer = setTimeout(function() {
+            killPhantom(opts, child);
+            reject(new Error('Browser process timeout'));
+        }, opts.killTimeout);
+
+
+        function errorHandler(err: any) {
             // Remove bound handlers after use
             child.removeListener('close', closeHandler);
             reject(err);
         }
 
-        function closeHandler(exitCode) {
+        function closeHandler(exitCode: number) {
             child.removeListener('error', errorHandler);
             if (exitCode > 0) {
-                var err;
-                if (exitCode === 10) {
-                    err = new Error('Unable to load given url: ' + url);
+                if(exitCode === 10) {
+                    reject(new Error(`Unable to load given url: ${url}`));
+                } else {
+                    reject(new Error(`Browser exited with error code ${exitCode}`));
                 }
-                reject(err);
             } else {
                 resolve(exitCode);
             }
@@ -80,23 +83,22 @@ function render(url, imagePath, harPath, opts) {
         child.once('close', closeHandler);
     }).then(function() {
         clearTimeout(killTimer);
+        return 8; // TODO: FIXME
     }).catch(function(err) {
         console.log('Oops: ' + err);
         clearTimeout(killTimer);
     });
 }
 
-function killPhantom(opts, child) {
+function killPhantom(opts: any, child: child_process.ChildProcess) {
     if (child) {
-        var msg = 'Phantomjs process didn\'t finish in ' +
-            opts.killTimeout + 'ms, killing it..';
+        let msg = `Browser failed to exit within ${opts.killTimeout} ms, killing it`;
         console.error(msg);
-
         child.kill();
     }
 }
 
-function main(opts) {
+function main(opts: any) {
     return render(opts.url, opts.imagePath, opts.harPath, opts)
         .catch(function(err) {
             console.error('\nTaking screenshot failed with error:');
@@ -112,16 +114,9 @@ function main(opts) {
         });
 }
 
-function xvfbKill() {
-    xvfb.stop(function(err) {
-        if(err) {
-            console.log("Error stopping xvfb: " + err);
-        }
-    });
-}
 
 if (require.main === module) {
-    var opts;
+    let opts: any;
     try {
         opts = cliParser.getOpts();
     } catch (err) {
@@ -134,8 +129,17 @@ if (require.main === module) {
     }
 
     if(opts.xvfb) {
-        var xvfb = new Xvfb();
-        xvfb.start(function(err, xvfbProcess) {
+        let xvfb = new Xvfb();
+
+        function xvfbKill() {
+            xvfb.stop(function(err: any) {
+                if(err) {
+                    console.log("Error stopping xvfb: " + err);
+                }
+            });
+        }
+
+        xvfb.start(function(err: Error, xvfbProcess: child_process.ChildProcess) {
             if(err) {
                 console.log("Error starting xvfb: " + err);
             } else {
