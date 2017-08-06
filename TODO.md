@@ -13,3 +13,23 @@ and spud the following user prefs in there:
 
 user_pref("devtools.errorconsole.deprecation_warnings", false);
 user_pref("javascript.options.strict", False);
+
+## Docker stuff
+
+Whuuuu there's a core file spudded into docker images:
+
+```sh
+docker run -ti --entrypoint=/bin/bash blairs/snap-sniff
+root@bdb173a4b318:/data# file /core
+/core: ELF 64-bit LSB core file x86-64, version 1 (SYSV), SVR4-style, from 'auplink /mnt/scratch/var-lib-docker/aufs/mnt/f70abbe99683746b8236d4a214a77b27c2'
+root@bdb173a4b318:/data#
+```
+
+Need to figure out what layer that's getting added in ><
+
+Also, permissions are all messed up under:
+
+/usr/lib/node_modules/snap-sniff
+
+WTF
+
